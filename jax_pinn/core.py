@@ -202,7 +202,7 @@ class MLP(nn.Module):
         layer_sizes: Sequence of layer sizes.
     """
 
-    layer_sizes: Sequence[int] = None  # 类型标注信息 Sequence[int]
+    layer_sizes: Sequence[int] = []  # 类型标注信息 Sequence[int]
     act_function:Function = nn.tanh 
 
     def setup(self):
@@ -225,7 +225,7 @@ class ResNet(nn.Module):
         layer_sizes: Sequence of layer sizes.
     """
 
-    layer_sizes: Sequence[int] = None 
+    layer_sizes: Sequence[int] = [] 
     act_function:Function = nn.tanh 
 
     def setup(self):
@@ -306,5 +306,5 @@ def CreateLaplaceNN(fun: NN, dim: int) -> NN:
 
 import orbax.checkpoint as ocp
 if 'checkpointer' not in locals() and 'checkpointer' not in globals():
-    checkpath = ocp.test_utils.erase_and_create_empty(f'/home/dyc/cpinn/data/{Timetxt}')
+    checkpath = ocp.test_utils.erase_and_create_empty(f'./data/{Timetxt}')
     checkpointer = ocp.StandardCheckpointer()
