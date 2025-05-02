@@ -5,7 +5,7 @@ It includes functions for gradient and Laplacian computation, neural network cre
 """
 import jax
 import jax.numpy as np
-from jax.typing import ArrayLike as Tensor
+from jax.typing import ArrayLike 
 from jax import Array
 from jax import grad, jit, vmap, value_and_grad, hessian
 from jax import random
@@ -16,11 +16,11 @@ import datetime
 import matplotlib.pyplot as plt
 from functools import partial
 import time
-from typing import List, Tuple, Union, Callable, Sequence,Any
+from typing import List, Tuple, Union, Callable, Sequence,Any,TypeVar
 import flax.linen as nn
 import optax
 from flax.typing import PRNGKey,  Dtype, Shape, VariableDict
-
+import warnings
 
 
 
@@ -43,7 +43,7 @@ class ComputeManager:
         self.precision = precision
         self.dtype = np.float32 if precision == "float32" else np.float64
 
-    def get_min_memory_gpu(self) -> str:
+    def get_min_memory_gpu(self) -> str|None:
         """Identifies the GPU with the minimum used memory."""
         try:
             output = subprocess.check_output(
@@ -62,7 +62,8 @@ class ComputeManager:
 
     def configure_gpu(self):
         """Configure the GPU for computing."""
-        os.environ["CUDA_VISIBLE_DEVICES"] = self.device_id
+        if self.device_id is not None:
+            os.environ["CUDA_VISIBLE_DEVICES"] = self.device_id
         print(f"Using GPU {self.device_id} with {self.precision} precision.")
         # Ensure the computation is done with the selected precision (dtype)
         jax.config.update('jax_enable_x64', self.precision == "float64")
@@ -114,15 +115,19 @@ compute_manager.configure_gpu()
 """
 Type alias for a function that takes a Tensor and returns an Array.
 """
+Tensor=Array
 Function = Callable[[Tensor], Array]
 NN=Callable[[Tensor,VariableDict],Array]
+NNModule=TypeVar("NNModule",bound=nn.Module)
 key:PRNGKey = random.PRNGKey(42)
 pi = np.pi
-if 'Timetxt' not in locals() and 'Timetxt' not in globals(): 
+if 'Timetxt' not in locals() and 'Timetxt' not in globals():
     Timetxt = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-# %%
+else:
+    Timetxt = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    warnings.warn("Timetxt has been updated",stacklevel=2)
 
-
+#%%
 def CreateGrad(fun: Function, dim: int) -> Function:
     """
     Creates a gradient function for a given function.
@@ -242,7 +247,7 @@ class ResNet(nn.Module):
 # %%
 
 
-def CreateNN(NN:nn.module, InputDim: int, OutputDim: int, Depth: int, width: int, Activation=nn.tanh) -> Tuple[nn.Module, Array]:
+def CreateNN(NN:NNModule, InputDim: int, OutputDim: int, Depth: int, width: int, Activation=nn.tanh) -> Tuple[NNModule, Array]:
     """
     Creates a neural network with specified architecture.
 
