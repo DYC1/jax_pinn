@@ -20,7 +20,7 @@ from typing import List, Tuple, Union, Callable, Sequence,Any
 import flax.linen as nn
 import optax
 from flax.typing import PRNGKey,  Dtype, Shape, VariableDict
-
+import wandb
 
 
 
@@ -303,6 +303,17 @@ def CreateLaplaceNN(fun: NN, dim: int) -> NN:
     """
 
     return jit(lambda _xx,para: ((vmap(lambda _x: np.trace(hessian(lambda _x: fun(_x.reshape(-1, dim),para).reshape())(_x))))(_xx)))
+
+
+ActivationDict = {
+    'tanh': nn.tanh,
+    'relu': nn.relu,
+    'sigmoid': nn.sigmoid,
+    'swish': nn.swish,
+    'gelu': nn.gelu,
+    'silu': nn.silu
+}
+
 
 import orbax.checkpoint as ocp
 if 'checkpointer' not in locals() and 'checkpointer' not in globals():
