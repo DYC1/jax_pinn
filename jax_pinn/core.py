@@ -22,7 +22,7 @@ import optax
 from flax.typing import PRNGKey,  Dtype, Shape, VariableDict
 import wandb
 import warnings
-
+from dataclasses import field
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
@@ -207,7 +207,7 @@ class MLP(nn.Module):
         layer_sizes: Sequence of layer sizes.
     """
 
-    layer_sizes: Sequence[int] = []  # 类型标注信息 Sequence[int]
+    layer_sizes: Sequence[int] = field(default_factory=list)  # 类型标注信息 Sequence[int]
     act_function:Function = nn.tanh 
 
     def setup(self):
@@ -230,7 +230,7 @@ class ResNet(nn.Module):
         layer_sizes: Sequence of layer sizes.
     """
 
-    layer_sizes: Sequence[int] = [] 
+    layer_sizes: Sequence[int] = field(default_factory=list) 
     act_function:Function = nn.tanh 
 
     def setup(self):
