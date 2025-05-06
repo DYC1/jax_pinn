@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="compute_manager",
-    version="1.0.0",
+    name="jax_pinn",
+    version="1.0.1",
     packages=find_packages(),
     install_requires=[
         "jax",
