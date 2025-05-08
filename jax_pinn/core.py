@@ -66,7 +66,8 @@ class ComputeManager:
             os.environ["CUDA_VISIBLE_DEVICES"] = self.device_id
         print(f"Using GPU {self.device_id} with {self.precision} precision.")
         # Ensure the computation is done with the selected precision (dtype)
-        jax.config.update('jax_enable_x64', self.precision == "float64")
+        if self.precision == "float64":
+            jax.config.update('jax_enable_x64', self.precision == "float64")
 
     def set_precision(self, precision: str):
         """Sets the precision for the computation."""
@@ -321,6 +322,14 @@ ActivationDict = {
 
 
 import orbax.checkpoint as ocp
-if 'checkpointer' not in locals() and 'checkpointer' not in globals():
-    checkpath = ocp.test_utils.erase_and_create_empty(f'./data/{Timetxt}')
+def get_chpt(path:str):
+    checkpath = ocp.test_utils.erase_and_create_empty(path)
     checkpointer = ocp.StandardCheckpointer()
+    return checkpointer,checkpath
+def save_chpt(checkpointer,checkpath,params):
+    checkpointer.save(checkpath, params)
+    print(f"Checkpoint saved at  {checkpath}")
+def load_chpt(checkpointer,checkpath,params):
+    params = checkpointer.restore(checkpath, params)
+    print(f"Checkpoint loaded from {checkpath}")
+    return params
