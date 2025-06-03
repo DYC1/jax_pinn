@@ -125,8 +125,8 @@ Tensor = Array
 Function = Callable[[Tensor], Array]
 NN = Callable[[Tensor, VariableDict], Array]
 NNModule = TypeVar("NNModule", bound=nn.Module)
-key: PRNGKey = random.PRNGKey(42)
-pi = np.pi
+# key: PRNGKey = random.PRNGKey(42)
+# pi = np.pi
 if 'Timetxt' not in locals() and 'Timetxt' not in globals():
     Timetxt = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 else:
@@ -263,7 +263,7 @@ class ResNet(nn.Module):
 # %%
 
 
-def CreateNN(NN: NNModule, InputDim: int, OutputDim: int, Depth: int, width: int, Activation=nn.tanh) -> Tuple[NNModule, Array]:
+def CreateNN(NN: NNModule, InputDim: int, OutputDim: int, Depth: int, width: int, key: PRNGKey, Activation=nn.tanh) -> Tuple[NNModule, Array]:
     """
     Creates a neural network with specified architecture.
 
@@ -360,3 +360,5 @@ def load_chpt(checkpointer: ocp.StandardCheckpointer, checkpath: str, params):
     params = checkpointer.restore(checkpath, params)
     print(f"Checkpoint loaded from {checkpath}")
     return params
+
+# %%
