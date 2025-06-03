@@ -114,8 +114,8 @@ class ComputeManager:
         print(f"Manually selected GPU {self.device_id} for computation.")
 
 
-compute_manager = ComputeManager(precision="float32")
-compute_manager.configure_gpu()
+# compute_manager = ComputeManager(precision="float32")
+# compute_manager.configure_gpu()
 
 
 """
