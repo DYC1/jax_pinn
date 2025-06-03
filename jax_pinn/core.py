@@ -333,7 +333,11 @@ ActivationDict = {
     'sigmoid': nn.sigmoid,
     'swish': nn.swish,
     'gelu': nn.gelu,
-    'silu': nn.silu
+    'silu': nn.silu,
+    'elu': nn.elu,
+    'leaky_relu': nn.leaky_relu,
+    'softplus': nn.softplus,
+    'softsign': nn.soft_sign
 }
 
 
