@@ -21,7 +21,6 @@ from typing import List, Tuple, Union, Callable, Sequence, Any, TypeVar
 import flax.linen as nn
 import optax
 from flax.typing import PRNGKey,  Dtype, Shape, VariableDict
-import wandb
 import warnings
 from dataclasses import field
 from codename import codename
